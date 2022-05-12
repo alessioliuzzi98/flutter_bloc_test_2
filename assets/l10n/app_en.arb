@@ -1,0 +1,6 @@
+{
+  "hello_world": "Hello world!",
+  "@hello_world": {
+    "description": "The hello world label"
+  }
+}
