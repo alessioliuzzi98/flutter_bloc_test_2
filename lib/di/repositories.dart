@@ -12,10 +12,11 @@ class _Repositories extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiRepositoryProvider(
         providers: [
-          RepositoryProvider<MainRepository>(
-            create: (context) => MainRepository(),
+          RepositoryProvider<CryptoRepository>(
+            create: (context) => CryptoRepository(
+              restClient: context.read(),
+            ),
           ),
-          // TODO: add here your repositories with RepositoryProvider
         ],
         child: child,
       );

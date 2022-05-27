@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter_bloc_test_2/pages/crypto_page.dart';
+import 'package:flutter_bloc_test_2/pages/main_page.dart';
 import 'package:flutter_bloc_test_2/pages/details_page.dart';
 
 // allows strongly-typed arguments passing and simplifies routes setup
@@ -8,7 +8,7 @@ import 'package:flutter_bloc_test_2/pages/details_page.dart';
   preferRelativeImports: false,
   routes: <AutoRoute>[
     // defines a route
-    AutoRoute(initial: true, page: CryptoPage),
+    AutoRoute(initial: true, page: MainPage),
     AutoRoute(page: DetailsPage),
   ],
 )

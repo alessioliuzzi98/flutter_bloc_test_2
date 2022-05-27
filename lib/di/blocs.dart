@@ -12,10 +12,13 @@ class _Blocs extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
-          BlocProvider<MainBloc>(
-            create: (context) => MainBloc(),
+          BlocProvider<CryptoBloc>(
+            create: (context) => CryptoBloc(
+              connectivity: context.read(),
+              logger: context.read(),
+              repository: context.read(),
+            )..loadData(),
           ),
-          // TODO: add here your blocs and cubits with BlocProvider
         ],
         child: child,
       );
