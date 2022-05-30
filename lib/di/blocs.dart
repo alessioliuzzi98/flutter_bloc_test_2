@@ -17,7 +17,7 @@ class _Blocs extends StatelessWidget {
               connectivity: context.read(),
               logger: context.read(),
               repository: context.read(),
-            )..loadData(),
+            ),
           ),
         ],
         child: child,

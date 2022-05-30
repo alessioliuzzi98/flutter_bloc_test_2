@@ -1,56 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_test_2/util.dart';
+import 'package:flutter_bloc_test_2/models/ticker.dart';
 
-class DetailsPage extends StatefulWidget {
-  DetailsPage({Key? key, required this.index}) : super(key: key);
+class DetailsPage extends StatelessWidget {
+  DetailsPage({Key? key, required this.ticker}) : super(key: key);
 
-  int index;
-
-  @override
-  State<StatefulWidget> createState() => ImageState(index: index);
-}
-
-class ImageState extends State<DetailsPage> {
-  ImageState({required this.index});
-
-  int index;
-
-  void _onImageTap() {
-    setState(() {
-      index >= Util.DRINKS_NAME.length - 1 ? index = 0 : index++;
-    });
-  }
+  Ticker ticker;
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detail page'),
       ),
-      body: Center(
-        child: _buildHeroDestination(
-          Util.DRINKS_URL[index],
-          Util.DRINKS_NAME[index],
-          width,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeroDestination(String path, String tag, double width) {
-    return Hero(
-      tag: tag,
-      child: Container(
-        width: width,
-        child: GestureDetector(
-          child: Image.network(
-            path,
-            fit: BoxFit.cover,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            ticker.symbol,
+            style: Theme.of(context)
+                .textTheme
+                .headline1
+                ?.copyWith(color: Colors.red),
           ),
-          onTap: () => _onImageTap(),
-        ),
+          const Divider(
+            height: 20,
+          ),
+          Text('Rank'),
+          Text('${ticker.rank}'),
+          const Divider(
+            height: 20,
+          ),
+          Text("24h% change"),
+          Text(ticker.percentChange24h),
+          const Divider(
+            height: 20,
+          ),
+        ],
       ),
     );
   }

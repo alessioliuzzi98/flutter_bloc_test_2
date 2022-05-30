@@ -7,7 +7,7 @@ import 'package:flutter_bloc_test_2/blocs/crypto/crypto_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_bloc_test_2/network/services/rest_client.dart';
+import 'package:flutter_bloc_test_2/network/services/rest_client_stats.dart';
 import 'package:flutter_bloc_test_2/repositories/crypto_repository.dart';
 
 part 'blocs.dart';

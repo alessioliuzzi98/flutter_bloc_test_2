@@ -36,8 +36,8 @@ class _Providers extends StatelessWidget {
           return dio;
         },
       ),
-      Provider<RestClient>(
-        create: (context) => RestClient(context.read()),
+      Provider<RestClientStats>(
+        create: (context) => RestClientStats(context.read()),
       ),
     ],
     child: child,

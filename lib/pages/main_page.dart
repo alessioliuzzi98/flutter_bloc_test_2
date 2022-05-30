@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_test_2/blocs/crypto/crypto_bloc.dart';
 import 'package:flutter_bloc_test_2/models/ticker.dart';
+import 'package:flutter_bloc_test_2/routers/app_router.gr.dart';
 
 class MainPage extends StatelessWidget {
   /// The MainPage constructor
@@ -11,18 +12,37 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: _body(),
+      appBar: AppBar(
+        title: const Text('Crypto list'),
+      ),
+      body: _body(context),
     );
   }
 
-  Widget _body() => BlocBuilder<CryptoBloc, CryptoState>(
-        //buildWhen: (_, current) => current is! FetchedCryptoState,
+  Widget _body(BuildContext context) => BlocBuilder<CryptoBloc, CryptoState>(
+        bloc: context.read<CryptoBloc>()..loadData(),
         builder: (context, state) {
           if (state is LoadingCryptoState) {
             return _loader();
           } else if (state is FetchedCryptoState) {
-            return _list(state.tickers.list);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 10,
+                  ),
+                  child: Text(
+                    'Markets',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                Expanded(
+                  child: _list(state.tickers.list),
+                ),
+              ],
+            );
           } else {
             return _error();
           }
@@ -30,12 +50,67 @@ class MainPage extends StatelessWidget {
       );
 
   Widget _list(List<Ticker> list) => ListView.separated(
-        itemBuilder: (context, index) => ListTile(
-          title: Text(list[index].symbol),
-          subtitle: Text('${list[index].percentChange24h} 24 hour change percentage'),
-        ),
+        itemBuilder: (context, index) => _item(context, list[index]),
         separatorBuilder: (context, index) => const Divider(),
         itemCount: list.length,
+      );
+
+  Widget _item(BuildContext context, Ticker ticker) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => context.router.push(
+          DetailsRoute(
+            ticker: ticker,
+          ),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 2,
+            horizontal: 10,
+          ),
+          height: 50,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ticker.imageUrl != null
+                  ? Image.network(ticker.imageUrl!)
+                  : Container(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(ticker.symbol),
+                  Text(ticker.name),
+                ],
+              ),
+              Expanded(
+                child: double.parse(ticker.percentChange24h).isNegative
+                    ? const Icon(
+                        Icons.arrow_downward,
+                        color: Colors.red,
+                      )
+                    : const Icon(
+                        Icons.arrow_upward,
+                        color: Colors.green,
+                      ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('${ticker.priceUsd} \$'),
+                  Text(
+                    '${ticker.percentChange24h}%',
+                    style: TextStyle(
+                      color: double.parse(ticker.percentChange24h).isNegative
+                          ? Colors.red
+                          : Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       );
 
   Widget _loader() => Center(

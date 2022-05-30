@@ -14,7 +14,8 @@ class _Repositories extends StatelessWidget {
         providers: [
           RepositoryProvider<CryptoRepository>(
             create: (context) => CryptoRepository(
-              restClient: context.read(),
+              restClientStats: context.read(),
+              restClientImage: context.read(),
             ),
           ),
         ],

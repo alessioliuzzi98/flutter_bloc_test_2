@@ -43,6 +43,7 @@ class CryptoBloc extends Bloc<CryptoEvent, CryptoState> {
       try {
         logger.d('Fetching cryptos');
         tickers = await repository.list();
+
       } on GenericException catch (error) {
         // TODO: manage error and emit to state
         logger.e('Cannot fetch cryptos');
